@@ -14,7 +14,7 @@ const Home = () => {
 
   const handleLogout = () => {
     document.cookie = `token=; path=/; expires= new Date(0)`;
-    window.location.href = "/";
+    navigate("/");
   };
   return (
     <>

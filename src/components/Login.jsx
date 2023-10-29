@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -44,7 +44,6 @@ const Login = () => {
           type="email"
           id="email"
           name="email"
-          required
           onChange={(e) => {
             setEmail(e.target.value);
           }}
@@ -56,13 +55,13 @@ const Login = () => {
           type="password"
           id="password"
           name="password"
-          required
           onChange={(e) => {
             setPassword(e.target.value);
           }}
         />
       </div>
       <button>Login</button>
+      <Link to="/signup">Sign Up</Link>
     </form>
   );
 };
