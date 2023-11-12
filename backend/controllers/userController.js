@@ -37,6 +37,7 @@ const createUser = async (req, res) => {
         password: hashedPassword,
         name,
         role,
+        active: true,
       });
       const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
         expiresIn: "1d",
@@ -63,6 +64,7 @@ const loginUser = async (req, res) => {
       if (!isMatch) {
         return res.status(400).json({ message: "Incorrect password" });
       } else {
+        await Users.findByIdAndUpdate(user._id, { active: true });
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
           expiresIn: "1d",
         });
@@ -70,6 +72,37 @@ const loginUser = async (req, res) => {
         res
           .status(200)
           .json({ message: "Logged in successfully", user, token });
+      }
+    }
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+};
+
+// PUT /api/users/logout - logout user
+const logoutUser = async (req, res) => {
+  try {
+    await Users.findByIdAndUpdate(req.params.id, { active: false });
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+// heartbeats - check if user is logged in make sure the active stays true and if not logged in make sure active update to false path: /api/users/heartbeats
+const heartbeats = async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      return res.status(200).json({ message: "Logged out successfully" });
+    } else {
+      const verified = jwt.verify(token, process.env.JWT_SECRET);
+      const user = await Users.findById(verified.userId);
+      if (!user) {
+        return res.status(200).json({ message: "Logged out successfully" });
+      } else {
+        await Users.findByIdAndUpdate(user._id, { active: true });
+        res.status(200).json({ message: "Logged in successfully" });
       }
     }
   } catch (err) {
@@ -114,6 +147,7 @@ module.exports = {
   getUserById,
   createUser,
   loginUser,
+  logoutUser,
   updateUser,
   deleteUser,
 };

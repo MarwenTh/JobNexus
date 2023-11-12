@@ -27,7 +27,7 @@ const userSchema = new Schema({
   },
   role: {
     type: String,
-    enum: ["jobSeeker", "recruiter"],
+    enum: ["Job Seeker", "Recruiter"],
     required: [true, "Role is required"],
     default: "jobSeeker",
   },
@@ -40,8 +40,98 @@ const userSchema = new Schema({
     default: Date.now,
   },
   updated_at: {
-    //if user updates profile info then this will be updated to current date and time automatically else it will be null
     type: Date,
+    default: null,
+  },
+  // Job Seeker Fields
+  education: {
+    type: String,
+    default: null,
+  },
+  skills: {
+    type: [String],
+    default: null,
+  },
+  experience: {
+    type: String,
+    default: null,
+  },
+  contactInfo: {
+    phone: {
+      type: String,
+      default: null,
+    },
+    address: {
+      type: String,
+      default: null,
+    },
+    city: {
+      type: String,
+      default: null,
+    },
+    state: {
+      type: String,
+      default: null,
+    },
+    zip: {
+      type: String,
+      default: null,
+    },
+  },
+  // Recruiter Fields
+  companyInfo: {
+    name: {
+      type: String,
+      default: null,
+    },
+    address: {
+      type: String,
+      default: null,
+    },
+    city: {
+      type: String,
+      default: null,
+    },
+    state: {
+      type: String,
+      default: null,
+    },
+    zip: {
+      type: String,
+      default: null,
+    },
+    phone: {
+      type: String,
+      default: null,
+    },
+    website: {
+      type: String,
+      default: null,
+    },
+    description: {
+      type: String,
+      default: null,
+    },
+    industry: {
+      type: String,
+      default: null,
+    },
+    companyLogo: {
+      type: String,
+      default: null,
+    },
+  },
+  //Common Fields
+  profilePicture: {
+    type: String,
+    default: null,
+  },
+  resume: {
+    type: String,
+    default: null,
+  },
+  coverLetter: {
+    type: String,
     default: null,
   },
 });
